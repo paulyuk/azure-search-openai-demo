@@ -43,6 +43,9 @@
     },
     "storageResourceGroupName": {
       "value": "${AZURE_STORAGE_RESOURCE_GROUP}"
+    },
+    "openAIKey": {
+      "value": "${OPENAI_API_KEY}"
     }
   }
 }

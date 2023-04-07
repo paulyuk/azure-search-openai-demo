@@ -1,8 +1,8 @@
-import openai
+import os
 from approaches.approach import Approach
 from azure.search.documents import SearchClient
 from azure.search.documents.models import QueryType
-from langchain.llms.openai import AzureOpenAI
+from langchain.llms.openai import OpenAI
 from langchain.callbacks.base import CallbackManager
 from langchain.chains import LLMChain
 from langchain.agents import Tool, ZeroShotAgent, AgentExecutor
@@ -86,7 +86,8 @@ Thought: {agent_scratchpad}"""
             prefix=overrides.get("prompt_template_prefix") or self.template_prefix,
             suffix=overrides.get("prompt_template_suffix") or self.template_suffix,
             input_variables = ["input", "agent_scratchpad"])
-        llm = AzureOpenAI(deployment_name=self.openai_deployment, temperature=overrides.get("temperature") or 0.3, openai_api_key=openai.api_key)
+        #llm = AzureOpenAI(deployment_name=self.openai_deployment, temperature=overrides.get("temperature") or 0.3, openai_api_key=openai.api_key)
+        llm = OpenAI(temperature=0.3, openai_api_key=os.getenv('OPENAI_API_KEY'))
         chain = LLMChain(llm = llm, prompt = prompt)
         agent_exec = AgentExecutor.from_agent_and_tools(
             agent = ZeroShotAgent(llm_chain = chain, tools = tools),
